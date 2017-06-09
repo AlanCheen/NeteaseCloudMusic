@@ -41,7 +41,7 @@ def search_artist_by_name(name):
             'type': 100,
             'offset': 0,
             'sub': 'false',
-            'limit': 10
+            'limit': 20
     }
     params = urllib.urlencode(params)
     resp = urllib2.urlopen(search_url, params)
@@ -58,7 +58,7 @@ def search_album_by_name(name):
             'type': 10,
             'offset': 0,
             'sub': 'false',
-            'limit': 20
+            'limit': 30
     }
     params = urllib.urlencode(params)
     resp = urllib2.urlopen(search_url, params)
@@ -89,7 +89,7 @@ def search_song_by_name(name):
             'type': 1,
             'offset': 0,
             'sub': 'false',
-            'limit': 20
+            'limit': 30
     }
     params = urllib.urlencode(params)
     resp = urllib2.urlopen(search_url, params)
@@ -137,13 +137,15 @@ def get_album_songs(album):
 def save_song_to_disk(song, folder):
     name = song['name']
     fpath = os.path.join(folder, name+'.mp3')
+    print ''+fpath
     if os.path.exists(fpath):
         return
 
     song_dfsId = str(song['bMusic']['dfsId'])
-    url = 'http://m%d.music.126.net/%s/%s.mp3' % (random.randrange(1, 3), encrypted_id(song_dfsId), song_dfsId)
+    url = 'http://p%d.music.126.net/%s/%s.mp3' % (random.randrange(1, 3), encrypted_id(song_dfsId), song_dfsId)
     #print '%s\t%s' % (url, name)
     #return
+    print url
     resp = urllib2.urlopen(url)
     data = resp.read()
     f = open(fpath, 'wb')
@@ -179,5 +181,6 @@ def download_album_by_search(name, folder='.'):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
+        print 'nono'
         sys.exit(0)
     download_album_by_search(sys.argv[1], sys.argv[2])
